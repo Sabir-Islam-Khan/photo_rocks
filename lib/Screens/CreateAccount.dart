@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:photo_rocks/Screens/CreateAccount.dart';
-import 'package:photo_rocks/Screens/HomePage.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'HomePage.dart';
 import '../Services/Auth.dart';
 
-class SignIn extends StatefulWidget {
+class CreateAccount extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _CreateAccountState createState() => _CreateAccountState();
 }
 
-class _SignInState extends State<SignIn> {
+class _CreateAccountState extends State<CreateAccount> {
   // value controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // total height and width constrains
+    // toal height and width contrans
     double totalHeight = MediaQuery.of(context).size.height;
     double totalWidth = MediaQuery.of(context).size.width;
-
-    // text controllers
 
     // firebase auth instance
     final AuthService _auth = AuthService();
@@ -45,7 +42,7 @@ class _SignInState extends State<SignIn> {
               // sign in button
               Center(
                 child: Text(
-                  "Sign in",
+                  "Create Account",
                   style: TextStyle(
                     color: Colors.grey[900],
                     fontSize: totalHeight * 0.05,
@@ -90,13 +87,12 @@ class _SignInState extends State<SignIn> {
                 child: GestureDetector(
                   onTap: () async {
                     print("Sign in button tapped !");
-
                     String name = emailController.value.text;
                     String password = passwordController.value.text;
 
                     try {
                       dynamic result =
-                          await _auth.signInWithMail(name, password);
+                          await _auth.registerWithMail(name, password);
                       if (result == null) {
                         Alert(
                           context: context,
@@ -126,7 +122,6 @@ class _SignInState extends State<SignIn> {
                     } catch (e) {
                       print(e);
                     }
-
                     emailController.clear();
                     passwordController.clear();
                   },
@@ -139,7 +134,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     child: Center(
                       child: Text(
-                        "Sign in",
+                        "Sign up",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
@@ -149,44 +144,6 @@ class _SignInState extends State<SignIn> {
                     ),
                   ),
                 ),
-              ),
-
-              SizedBox(
-                height: totalHeight * 0.04,
-              ),
-
-              Row(
-                children: [
-                  SizedBox(
-                    width: totalWidth * 0.2,
-                  ),
-                  Text(
-                    "Don't have an account ?  ",
-                    style: TextStyle(
-                      color: Colors.indigoAccent,
-                      fontSize: totalWidth * 0.04,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateAccount(),
-                        ),
-                      );
-                    },
-                    child: Text(
-                      "Create One",
-                      style: TextStyle(
-                        color: Colors.indigoAccent,
-                        fontSize: totalWidth * 0.04,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
