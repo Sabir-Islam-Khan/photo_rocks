@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "240388001230",
+    "firebase_url": "https://photo-rocks.firebaseio.com",
+    "project_id": "photo-rocks",
+    "storage_bucket": "photo-rocks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240388001230:android:4d61eeb81e5b27bf716f9f",
+        "android_client_info": {
+          "package_name": "com.asteriskLab.photo_rocks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240388001230-t0ui4nea0l3d7eo9lasbkd1pm5i7vo07.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.asteriskLab.photo_rocks",
+            "certificate_hash": "4a668acaaf0f56f509989cbc6fdd0686467cb36d"
+          }
+        },
+        {
+          "client_id": "240388001230-0msplee4mb5l9nd5jgtidb8vrvm88gvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPDDg-EExMpU-e6Z8GvSrbBuQZzOEAj2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240388001230-0msplee4mb5l9nd5jgtidb8vrvm88gvu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
