@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Services/Auth.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -8,176 +9,105 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // total height and width constrains
+    double totalHeight = MediaQuery.of(context).size.height;
+    double totalWidth = MediaQuery.of(context).size.width;
+
+    // text controllers
+
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+
+    // firebase auth instance
+    final AuthService _auth = AuthService();
+
     return MaterialApp(
       home: Scaffold(
+        // appbar
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Center(
-            child: Text("Provider test"),
+            child: Text("Photo Rocks"),
           ),
         ),
+        // main body
+        backgroundColor: Colors.grey[200],
+        // TODO: this is just core functionality. Have to change UI later
         body: Column(
           children: <Widget>[
             SizedBox(
-              height: height * 0.15,
+              height: totalHeight * 0.15,
             ),
+            // sign in button
             Center(
               child: Text(
                 "Sign in",
                 style: TextStyle(
                   color: Colors.grey[900],
-                  fontSize: 30.0,
+                  fontSize: totalHeight * 0.05,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
+
             SizedBox(
-              height: height * 0.08,
+              height: totalHeight * 0.02,
             ),
-            Center(
-              child: Card(
-                elevation: 20.0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Container(
-                    height: height * 0.09,
-                    width: width * 0.8,
-                    color: Colors.white,
-                    child: GestureDetector(
-                      onTap: () {
-                        print("Google tapped !");
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          SizedBox(width: 20.0),
-                          Image(
-                            image: AssetImage("assets/images/googleLogo.png"),
-                          ),
-                          SizedBox(
-                            width: width * 0.12,
-                          ),
-                          Center(
-                            child: Text(
-                              "Sign in with Google",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+            // textfiled for email
+            Container(
+              width: totalWidth * 0.9,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Email",
                 ),
+                keyboardType: TextInputType.emailAddress,
+                controller: emailController,
+              ),
+            ),
+
+            SizedBox(
+              height: totalHeight * 0.01,
+            ),
+            // textfield for password
+            Container(
+              width: totalWidth * 0.9,
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Password",
+                ),
+                controller: passwordController,
+                obscureText: true,
               ),
             ),
             SizedBox(
-              height: height * 0.01,
+              height: totalHeight * 0.03,
             ),
             Center(
-              child: Card(
-                elevation: 20.0,
+              child: GestureDetector(
+                onTap: () async {
+                  print("Sign in button tapped !");
+                  String name = emailController.value.text;
+                  print("mail is $name");
+                  print("password is $passwordController");
+                  // dynamic result = await _auth.registerWithMail(
+                  //   emailController.value.text,
+                  //   passwordController.value.text,
+                  // );
+                },
                 child: Container(
-                  height: height * 0.09,
-                  width: width * 0.8,
-                  color: Color.fromRGBO(66, 103, 178, 1),
-                  child: GestureDetector(
-                    onTap: () {
-                      print("Facebook Tapped !");
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 20.0,
-                        ),
-                        Container(
-                          height: 40.0,
-                          width: 40.0,
-                          color: Colors.white,
-                          child: Image(
-                            image: AssetImage(
-                              "assets/images/facebookLogo.png",
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: width * 0.1,
-                        ),
-                        Text(
-                          "Sign in with Facebook",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
+                  height: totalHeight * 0.08,
+                  width: totalWidth * 0.4,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25.0),
+                    color: Colors.indigoAccent,
                   ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  print("Email Auth");
-                },
-                child: Card(
-                  elevation: 20.0,
-                  child: Container(
-                    height: height * 0.09,
-                    width: width * 0.8,
-                    color: Color.fromRGBO(0, 108, 94, 1),
-                    child: Center(
-                      child: Text(
-                        "Sign in with Email",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Text(
-              "Or",
-              style: TextStyle(
-                fontSize: 17.0,
-              ),
-            ),
-            SizedBox(
-              height: 5.0,
-            ),
-            Center(
-              child: GestureDetector(
-                onTap: () {
-                  print("Anonymous !");
-                },
-                child: Card(
-                  elevation: 20.0,
-                  child: Container(
-                    height: height * 0.09,
-                    width: width * 0.8,
-                    color: Color.fromRGBO(214, 225, 106, 1),
-                    child: Center(
-                      child: Text(
-                        "Go Anonymous",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
-                        ),
+                  child: Center(
+                    child: Text(
+                      "Sign in",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
