@@ -105,6 +105,7 @@ class _SignInState extends State<SignIn> {
                 height: totalHeight * 0.03,
               ),
               Center(
+                // sign in button
                 child: GestureDetector(
                   onTap: () {
                     String mail = emailController.value.text;
@@ -116,6 +117,7 @@ class _SignInState extends State<SignIn> {
                     passwordController.clear();
                   },
                   child: Container(
+                    // container for button
                     height: totalHeight * 0.08,
                     width: totalWidth * 0.4,
                     decoration: BoxDecoration(
@@ -124,6 +126,7 @@ class _SignInState extends State<SignIn> {
                     ),
                     child: Center(
                       child: Text(
+                        // button text
                         "Sign in",
                         style: TextStyle(
                           color: Colors.white,
@@ -139,7 +142,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(
                 height: totalHeight * 0.04,
               ),
-
+              // bottom section
               Row(
                 children: [
                   SizedBox(

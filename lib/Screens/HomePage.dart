@@ -23,6 +23,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        // appbar
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Center(
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           actions: [
+            // button for logging out
             FlatButton(
               onPressed: _signOut,
               child: Text(

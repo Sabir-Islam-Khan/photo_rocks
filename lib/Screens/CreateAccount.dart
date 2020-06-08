@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Services/LandingPage.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -84,43 +87,46 @@ class _CreateAccountState extends State<CreateAccount> {
                 height: totalHeight * 0.03,
               ),
               Center(
+                // sign up button
                 child: GestureDetector(
                   onTap: () async {
-                    print("Sign in button tapped !");
-                    String name = emailController.value.text;
+                    print("Sign up button tapped !");
+                    String mail = emailController.value.text;
                     String password = passwordController.value.text;
 
                     try {
-                      // dynamic result =
-                      //     await _auth.registerWithMail(name, password);
-                      // if (result == null) {
-                      //   Alert(
-                      //     context: context,
-                      //     type: AlertType.error,
-                      //     title: "Error !!",
-                      //     desc: "Info invalid. Check credentials !",
-                      //     buttons: [
-                      //       DialogButton(
-                      //         child: Text(
-                      //           "Okay",
-                      //           style: TextStyle(
-                      //               color: Colors.white, fontSize: 20),
-                      //         ),
-                      //         onPressed: () => Navigator.pop(context),
-                      //         width: 120,
-                      //       )
-                      //     ],
-                      //   ).show();
-                      // } else {
-                      //   Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) => HomePage(
-                      //         onSignOut: null,
-                      //       ),
-                      //     ),
-                      //   );
-                      // }
+                      dynamic result = await FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
+                              email: mail, password: password);
+                      if (result == null) {
+                        // alert if info is invalid
+                        Alert(
+                          context: context,
+                          type: AlertType.error,
+                          title: "Error !!",
+                          desc: "Info invalid. Check credentials !",
+                          buttons: [
+                            DialogButton(
+                              child: Text(
+                                "Okay",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              width: 120,
+                            )
+                          ],
+                        ).show();
+                      } else {
+                        // goes to landing page after succesful
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            // here landing page takes user to homepage
+                            builder: (context) => LandingPage(),
+                          ),
+                        );
+                      }
                     } catch (e) {
                       print(e);
                     }
@@ -128,6 +134,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     passwordController.clear();
                   },
                   child: Container(
+                    // container for the button
                     height: totalHeight * 0.08,
                     width: totalWidth * 0.4,
                     decoration: BoxDecoration(
@@ -135,6 +142,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       color: Colors.indigoAccent,
                     ),
                     child: Center(
+                      // button text
                       child: Text(
                         "Sign up",
                         style: TextStyle(

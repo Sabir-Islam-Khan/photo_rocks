@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // landing page to decide which page to show
       home: LandingPage(),
     );
   }
