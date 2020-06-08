@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 import 'package:photo_rocks/Services/LandingPage.dart';
 
 void main() {
@@ -11,7 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // landing page to decide which page to show
-      home: LandingPage(),
+      home: LandingPage(
+        auth: Auth(),
+      ),
     );
   }
 }

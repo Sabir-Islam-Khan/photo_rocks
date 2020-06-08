@@ -1,8 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({@required this.onSignOut});
+  HomePage({@required this.onSignOut, @required this.auth});
+
+  // authbase instance
+
+  final AuthBase auth;
+
   final VoidCallback onSignOut;
 
   @override
@@ -12,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   Future<void> _signOut() async {
     try {
-      await FirebaseAuth.instance.signOut();
+      await widget.auth.signOut();
       widget.onSignOut();
     } catch (e) {
       print(e.toString());

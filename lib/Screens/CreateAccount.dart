@@ -1,9 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 import 'package:photo_rocks/Services/LandingPage.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CreateAccount extends StatefulWidget {
+  final AuthBase auth;
+
+  CreateAccount({@required this.auth});
   @override
   _CreateAccountState createState() => _CreateAccountState();
 }
@@ -95,9 +98,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     String password = passwordController.value.text;
 
                     try {
-                      dynamic result = await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                              email: mail, password: password);
+                      dynamic result = await widget.auth
+                          .createAccountWithEmail(mail, password);
                       if (result == null) {
                         // alert if info is invalid
                         Alert(
@@ -123,7 +125,9 @@ class _CreateAccountState extends State<CreateAccount> {
                           context,
                           MaterialPageRoute(
                             // here landing page takes user to homepage
-                            builder: (context) => LandingPage(),
+                            builder: (context) => LandingPage(
+                              auth: widget.auth,
+                            ),
                           ),
                         );
                       }

@@ -1,23 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_rocks/Screens/HomePage.dart';
 import 'package:photo_rocks/Screens/Signin.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 
 class LandingPage extends StatefulWidget {
+  // authbase instance
+
+  final AuthBase auth;
+
+  LandingPage({@required this.auth});
   @override
   _LandingPageState createState() => _LandingPageState();
 }
 
 class _LandingPageState extends State<LandingPage> {
-  // firebase user instance
-  FirebaseUser _user;
-
-  // method to update user state
-  void _updateUser(FirebaseUser user) {
-    setState(() {
-      _user = user;
-    });
-  }
+  // User class instance
+  User _user;
 
   // init state check user method
   @override
@@ -29,8 +27,15 @@ class _LandingPageState extends State<LandingPage> {
   // this method determines which page to show
 
   Future<void> _checkCurrentUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    User user = await widget.auth.currentUser();
     _updateUser(user);
+  }
+
+  // method to update user state
+  void _updateUser(User user) {
+    setState(() {
+      _user = user;
+    });
   }
 
   @override
@@ -39,10 +44,12 @@ class _LandingPageState extends State<LandingPage> {
 
     if (_user == null) {
       return SignIn(
+        auth: widget.auth,
         onSignIn: _updateUser,
       );
     }
     return HomePage(
+      auth: widget.auth,
       onSignOut: () => _updateUser(null),
     );
   }
