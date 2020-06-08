@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_rocks/Screens/CreateAccount.dart';
-import 'package:photo_rocks/Screens/HomePage.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import '../Services/Auth.dart';
 
 class SignIn extends StatefulWidget {
+  final Function(FirebaseUser) onSignIn;
+  SignIn({@required this.onSignIn});
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -13,6 +14,23 @@ class _SignInState extends State<SignIn> {
   // value controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  // signin  with mail method
+
+  Future<void> _signInWithEmail(String mail, String password) async {
+    try {
+      FirebaseUser user = (await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: mail, password: password))
+          .user;
+      widget.onSignIn(user);
+      print("user id : ${user.uid}");
+    } catch (e) {
+      print(
+        e.toString(),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // total height and width constrains
@@ -21,8 +39,8 @@ class _SignInState extends State<SignIn> {
 
     // text controllers
 
-    // firebase auth instance
-    final AuthService _auth = AuthService();
+    // // firebase auth instance
+    // final AuthService _auth = AuthService();
 
     return MaterialApp(
       home: Scaffold(
@@ -88,44 +106,11 @@ class _SignInState extends State<SignIn> {
               ),
               Center(
                 child: GestureDetector(
-                  onTap: () async {
-                    print("Sign in button tapped !");
-
-                    String name = emailController.value.text;
+                  onTap: () {
+                    String mail = emailController.value.text;
                     String password = passwordController.value.text;
 
-                    try {
-                      dynamic result =
-                          await _auth.signInWithMail(name, password);
-                      if (result == null) {
-                        Alert(
-                          context: context,
-                          type: AlertType.error,
-                          title: "Error !!",
-                          desc: "Info invalid. Check credentials !",
-                          buttons: [
-                            DialogButton(
-                              child: Text(
-                                "Okay",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
-                            )
-                          ],
-                        ).show();
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                        );
-                      }
-                    } catch (e) {
-                      print(e);
-                    }
+                    _signInWithEmail(mail, password);
 
                     emailController.clear();
                     passwordController.clear();

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
-import 'HomePage.dart';
-import '../Services/Auth.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -18,9 +15,6 @@ class _CreateAccountState extends State<CreateAccount> {
     double totalHeight = MediaQuery.of(context).size.height;
     double totalWidth = MediaQuery.of(context).size.width;
 
-    // firebase auth instance
-    final AuthService _auth = AuthService();
-
     return MaterialApp(
       home: Scaffold(
         // appbar
@@ -28,6 +22,12 @@ class _CreateAccountState extends State<CreateAccount> {
           backgroundColor: Colors.indigo,
           title: Center(
             child: Text("Photo Rocks"),
+          ),
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.arrow_back),
           ),
         ),
         // main body
@@ -91,34 +91,36 @@ class _CreateAccountState extends State<CreateAccount> {
                     String password = passwordController.value.text;
 
                     try {
-                      dynamic result =
-                          await _auth.registerWithMail(name, password);
-                      if (result == null) {
-                        Alert(
-                          context: context,
-                          type: AlertType.error,
-                          title: "Error !!",
-                          desc: "Info invalid. Check credentials !",
-                          buttons: [
-                            DialogButton(
-                              child: Text(
-                                "Okay",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
-                              onPressed: () => Navigator.pop(context),
-                              width: 120,
-                            )
-                          ],
-                        ).show();
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                        );
-                      }
+                      // dynamic result =
+                      //     await _auth.registerWithMail(name, password);
+                      // if (result == null) {
+                      //   Alert(
+                      //     context: context,
+                      //     type: AlertType.error,
+                      //     title: "Error !!",
+                      //     desc: "Info invalid. Check credentials !",
+                      //     buttons: [
+                      //       DialogButton(
+                      //         child: Text(
+                      //           "Okay",
+                      //           style: TextStyle(
+                      //               color: Colors.white, fontSize: 20),
+                      //         ),
+                      //         onPressed: () => Navigator.pop(context),
+                      //         width: 120,
+                      //       )
+                      //     ],
+                      //   ).show();
+                      // } else {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => HomePage(
+                      //         onSignOut: null,
+                      //       ),
+                      //     ),
+                      //   );
+                      // }
                     } catch (e) {
                       print(e);
                     }
