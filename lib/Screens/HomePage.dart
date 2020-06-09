@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:photo_rocks/Services/Auth.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({@required this.onSignOut, @required this.auth});
+  HomePage({@required this.auth});
 
   // authbase instance
 
   final AuthBase auth;
-
-  final VoidCallback onSignOut;
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -18,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   Future<void> _signOut() async {
     try {
       await widget.auth.signOut();
-      widget.onSignOut();
     } catch (e) {
       print(e.toString());
     }

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -17,6 +18,7 @@ abstract class AuthBase {
   Future<void> signOut();
   Future<User> createAccountWithEmail(String mail, String password);
   Future<User> signInWithGoogle();
+  Stream<User> get onAuthStateChanged;
 }
 
 class Auth implements AuthBase {
@@ -29,6 +31,12 @@ class Auth implements AuthBase {
     } else {
       return User(uid: user.uid);
     }
+  }
+
+  // stream to add listener
+  @override
+  Stream<User> get onAuthStateChanged {
+    return _firebaseAuth.onAuthStateChanged.map(_userFromFirebase);
   }
 
 // method to get current user info
