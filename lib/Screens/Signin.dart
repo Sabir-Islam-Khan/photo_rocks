@@ -3,11 +3,9 @@ import 'package:photo_rocks/Screens/CreateAccount.dart';
 import 'package:photo_rocks/Services/Auth.dart';
 
 class SignIn extends StatefulWidget {
-  final Function(User) onSignIn;
-
   // authbase instance
   final AuthBase auth;
-  SignIn({@required this.onSignIn, @required this.auth});
+  SignIn({@required this.auth});
 
   @override
   _SignInState createState() => _SignInState();
@@ -22,9 +20,7 @@ class _SignInState extends State<SignIn> {
 
   Future<void> _signInWithEmail(String mail, String password) async {
     try {
-      User user = await widget.auth.signInWithEmail(mail, password);
-      widget.onSignIn(user);
-      print("user id : ${user.uid}");
+      widget.auth.signInWithEmail(mail, password);
     } catch (e) {
       print(
         e.toString(),
@@ -35,7 +31,6 @@ class _SignInState extends State<SignIn> {
   Future<void> _signInWithGoogle() async {
     try {
       User user = await widget.auth.signInWithGoogle();
-      widget.onSignIn(user);
     } catch (e) {
       print("Error in google sign in \n $e");
     }
