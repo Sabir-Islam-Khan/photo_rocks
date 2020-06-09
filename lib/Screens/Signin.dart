@@ -32,6 +32,15 @@ class _SignInState extends State<SignIn> {
     }
   }
 
+  Future<void> _signInWithGoogle() async {
+    try {
+      User user = await widget.auth.signInWithGoogle();
+      widget.onSignIn(user);
+    } catch (e) {
+      print("Error in google sign in \n $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // total height and width constrains
@@ -141,7 +150,30 @@ class _SignInState extends State<SignIn> {
               ),
 
               SizedBox(
-                height: totalHeight * 0.04,
+                height: totalHeight * 0.02,
+              ),
+
+              Text(
+                "Or",
+                style: TextStyle(
+                  color: Colors.indigo,
+                  fontSize: 16.0,
+                ),
+              ),
+
+              SizedBox(
+                height: totalHeight * 0.02,
+              ),
+
+              GestureDetector(
+                onTap: _signInWithGoogle,
+                child: Image(
+                  image: AssetImage("assets/images/googleLogo.png"),
+                ),
+              ),
+
+              SizedBox(
+                height: totalHeight * 0.02,
               ),
               // bottom section
               Row(

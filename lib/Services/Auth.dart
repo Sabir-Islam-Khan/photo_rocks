@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // user class
 class User {
@@ -14,6 +16,7 @@ abstract class AuthBase {
   Future<User> signInWithEmail(String mail, String password);
   Future<void> signOut();
   Future<User> createAccountWithEmail(String mail, String password);
+  Future<User> signInWithGoogle();
 }
 
 class Auth implements AuthBase {
@@ -52,6 +55,37 @@ class Auth implements AuthBase {
       password: password,
     );
     return _userFromFirebase(authResult.user);
+  }
+
+  // sign in with google account
+  @override
+  Future<User> signInWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignInAccount googleAccount = await googleSignIn.signIn();
+
+    if (googleAccount != null) {
+      final GoogleSignInAuthentication googleAuth =
+          await googleAccount.authentication;
+
+      if (googleAuth.idToken != null && googleAuth.accessToken != null) {
+        final authResult = await _firebaseAuth
+            .signInWithCredential(GoogleAuthProvider.getCredential(
+          idToken: googleAuth.idToken,
+          accessToken: googleAuth.accessToken,
+        ));
+        return _userFromFirebase(authResult.user);
+      } else {
+        throw PlatformException(
+          code: "INVALID TOKEN",
+          message: "Token is invalid for this user",
+        );
+      }
+    } else {
+      throw PlatformException(
+        code: "ABORTED",
+        message: "User aborted google sign in",
+      );
+    }
   }
 
   // method to sign out
