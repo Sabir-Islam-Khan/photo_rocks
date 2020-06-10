@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Screens/UploadImages.dart';
 import 'package:photo_rocks/Services/Auth.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +24,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // total height and width constrains
+    double totalHeight = MediaQuery.of(context).size.height;
+    double totalWidth = MediaQuery.of(context).size.width;
+
     return MaterialApp(
       home: Scaffold(
         // appbar
@@ -52,6 +57,56 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         backgroundColor: Colors.grey[300],
+        body: Container(
+          height: totalHeight * 1,
+          width: totalWidth * 1,
+          child: Column(
+            children: [
+              SizedBox(
+                height: totalHeight * 0.35,
+              ),
+              RaisedButton(
+                color: Colors.teal,
+                onPressed: () {
+                  print("Upload images button tapped !");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UploadImages(
+                        auth: widget.auth,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "Upload images",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: totalHeight * 0.04,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  print("View images button tapped");
+                },
+                color: Colors.green,
+                child: Text(
+                  "View Images",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
