@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 // user class
 class User {
@@ -18,6 +19,7 @@ abstract class AuthBase {
   Future<void> signOut();
   Future<User> createAccountWithEmail(String mail, String password);
   Future<User> signInWithGoogle();
+  Future<User> signInWithFacebook();
   Stream<User> get onAuthStateChanged;
 }
 
@@ -96,9 +98,36 @@ class Auth implements AuthBase {
     }
   }
 
+  // method to sign in with facebook
+  @override
+  Future<User> signInWithFacebook() async {
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logInWithReadPermissions(
+      ["public_profile"],
+    );
+
+    if (result.accessToken != null) {
+      final authResult = await _firebaseAuth.signInWithCredential(
+        FacebookAuthProvider.getCredential(
+          accessToken: result.accessToken.token,
+        ),
+      );
+      return _userFromFirebase(authResult.user);
+    } else {
+      throw PlatformException(
+        code: "FB_LOGIN_ABORTED",
+        message: "User canceled facebook login",
+      );
+    }
+  }
+
   // method to sign out
   @override
   Future<void> signOut() async {
+    final googleSignin = GoogleSignIn();
+    final facebookLogin = FacebookLogin();
+    await facebookLogin.logOut();
+    await googleSignin.signOut();
     await _firebaseAuth.signOut();
   }
 }
