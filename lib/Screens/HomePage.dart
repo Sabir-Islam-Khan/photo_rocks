@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Screens/NewsFeed.dart';
 import 'package:photo_rocks/Screens/UploadImages.dart';
 import 'package:photo_rocks/Services/Auth.dart';
 
@@ -93,6 +94,12 @@ class _HomePageState extends State<HomePage> {
               RaisedButton(
                 onPressed: () {
                   print("View images button tapped");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewsFeed(),
+                    ),
+                  );
                 },
                 color: Colors.green,
                 child: Text(

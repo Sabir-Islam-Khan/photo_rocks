@@ -17,7 +17,10 @@ class UploadImages extends StatefulWidget {
 class _UploadImagesState extends State<UploadImages> {
   File _image;
   final picker = ImagePicker();
-  var storage = FirebaseStorage.instance;
+  // var storage = FirebaseStorage.instance;
+
+  final FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: "gs://photo-rocks.appspot.com");
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -123,7 +126,7 @@ class _UploadImagesState extends State<UploadImages> {
                         setState(() {
                           _isLoading = true;
                         });
-                        StorageTaskSnapshot snapshot = await storage
+                        StorageTaskSnapshot snapshot = await _storage
                             .ref()
                             .child("$uid/${DateTime.now()}")
                             .putFile(_image)
@@ -157,7 +160,7 @@ class _UploadImagesState extends State<UploadImages> {
                           fontSize: 18.0,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
