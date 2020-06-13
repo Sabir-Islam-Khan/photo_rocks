@@ -20,63 +20,35 @@ class _NewsFeedState extends State<NewsFeed> {
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey[300],
-        appBar: AppBar(
-          backgroundColor: Colors.indigo,
-          title: Center(
-            child: Text(
-              "News Feed",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ),
-          ),
-          leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: Icon(
-              Icons.arrow_back,
-            ),
-          ),
-        ),
+        backgroundColor: Colors.white,
         body: Container(
           height: totalHeight * 1,
           width: totalWidth * 1,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.0),
-                child: FutureBuilder(
-                  future: getImages(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.documents.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: totalHeight * 0.01,
-                              ),
-                              Image.network(
-                                  snapshot.data.documents[index].data["url"],
-                                  fit: BoxFit.fill),
-                            ],
-                          );
-                        },
-                      );
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.none) {
-                      return Text("No data");
-                    }
-                    return CircularProgressIndicator();
+          child: FutureBuilder(
+            future: getImages(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(
+                      children: [
+                        SizedBox(
+                          height: totalHeight * 0.01,
+                        ),
+                        Image.network(
+                            snapshot.data.documents[index].data["url"],
+                            fit: BoxFit.fill),
+                      ],
+                    );
                   },
-                ),
-              ),
-
-              /// code here
-            ],
+                );
+              } else if (snapshot.connectionState == ConnectionState.none) {
+                return Text("No data");
+              }
+              return CircularProgressIndicator();
+            },
           ),
         ),
       ),

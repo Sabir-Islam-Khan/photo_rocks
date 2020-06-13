@@ -32,10 +32,34 @@ class _UploadImagesState extends State<UploadImages> {
     );
   }
 
+  String test;
   Future<String> getUid() async {
     User user = await widget.auth.currentUser();
-
+    setState(() {
+      test = user.uid;
+    });
     return user.uid.toString();
+  }
+
+  void uploadImage() async {
+    String uid = await getUid();
+    print("$uid");
+    setState(() {
+      _isLoading = true;
+    });
+    StorageTaskSnapshot snapshot = await _storage
+        .ref()
+        .child("$uid/${DateTime.now()}")
+        .putFile(_image)
+        .onComplete;
+    final String downloadUrl = await snapshot.ref.getDownloadURL();
+    await Firestore.instance.collection("images").add({
+      "url": downloadUrl,
+      "name": _image.toString(),
+    });
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   bool _isLoading = false;
@@ -121,36 +145,7 @@ class _UploadImagesState extends State<UploadImages> {
                     // Upload button
                     RaisedButton(
                       onPressed: () async {
-                        String uid = await getUid();
-                        print("$uid");
-                        setState(() {
-                          _isLoading = true;
-                        });
-                        StorageTaskSnapshot snapshot = await _storage
-                            .ref()
-                            .child("$uid/${DateTime.now()}")
-                            .putFile(_image)
-                            .onComplete;
-
-                        if (snapshot.error == null) {
-                          final String downloadUrl =
-                              await snapshot.ref.getDownloadURL();
-                          await Firestore.instance.collection("images").add({
-                            "url": downloadUrl,
-                            "name": _image.toString(),
-                          });
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          final snackBar = SnackBar(
-                            content: Text('Yay! Success'),
-                          );
-                          Scaffold.of(context).showSnackBar(snackBar);
-                        } else {
-                          print(
-                              'Error from image repo ${snapshot.error.toString()}');
-                          throw ('This file is not an image');
-                        }
+                        uploadImage();
                       },
                       color: Colors.indigo,
                       child: Text(
