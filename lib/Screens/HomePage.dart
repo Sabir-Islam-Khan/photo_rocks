@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_rocks/Screens/NewsFeed.dart';
 import 'package:photo_rocks/Screens/UploadImages.dart';
 import 'package:photo_rocks/Services/Auth.dart';
+import 'package:photo_rocks/Widgets/CustomNavBar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({@required this.auth});
@@ -56,6 +57,11 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
+        ),
+        bottomNavigationBar: CustomNavBar(
+          totalHeight,
+          totalWidth,
+          "HomePage",
         ),
         backgroundColor: Colors.grey[300],
         body: Container(

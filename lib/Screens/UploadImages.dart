@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_rocks/Services/Auth.dart';
+import 'package:photo_rocks/Widgets/CustomNavBar.dart';
 
 class UploadImages extends StatefulWidget {
   final AuthBase auth;
@@ -57,6 +58,7 @@ class _UploadImagesState extends State<UploadImages> {
       "url": downloadUrl,
       "name": captionController.value.text,
     });
+    captionController.clear();
     setState(() {
       _isLoading = false;
     });
@@ -89,6 +91,11 @@ class _UploadImagesState extends State<UploadImages> {
             onTap: () => Navigator.pop(context),
             child: Icon(Icons.arrow_back),
           ),
+        ),
+        bottomNavigationBar: CustomNavBar(
+          totalHeight,
+          totalWidth,
+          "UploadImages",
         ),
         body: _isLoading == true
             ? Container(
@@ -170,7 +177,6 @@ class _UploadImagesState extends State<UploadImages> {
                       RaisedButton(
                         onPressed: () async {
                           uploadImage();
-                          captionController.clear();
                         },
                         color: Colors.indigo,
                         child: Text(

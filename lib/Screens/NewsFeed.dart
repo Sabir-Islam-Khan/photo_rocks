@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Widgets/CustomNavBar.dart';
 
 class NewsFeed extends StatefulWidget {
   @override
@@ -22,6 +25,11 @@ class _NewsFeedState extends State<NewsFeed> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
+        bottomNavigationBar: CustomNavBar(
+          totalHeight,
+          totalWidth,
+          "NewsFeed",
+        ),
         body: SingleChildScrollView(
           child: Container(
             height: totalHeight * 1,
@@ -135,7 +143,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                         color: Colors.grey,
                                       ),
                                       Text(
-                                        " 5466",
+                                        " ${Random().nextInt(3500)},",
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -148,7 +156,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                         color: Colors.pink[300],
                                       ),
                                       Text(
-                                        " 540",
+                                        " ${Random().nextInt(500)}",
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
