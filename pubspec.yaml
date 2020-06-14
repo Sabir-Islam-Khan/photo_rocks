@@ -55,6 +55,14 @@ flutter:
   assets:
     - assets/images/googleLogo.png
     - assets/images/facebookLogo.png
+    - assets/images/profile_active.png
+    - assets/images/profile_inactive.png
+    - assets/images/home_active.png
+    - assets/images/home_inactive.png
+    - assets/images/upload_active.png
+    - assets/images/upload_inactive.png
+    - assets/images/feed_active.png
+    - assets/images/feed_inactive.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
