@@ -55,12 +55,14 @@ class _UploadImagesState extends State<UploadImages> {
     final String downloadUrl = await snapshot.ref.getDownloadURL();
     await Firestore.instance.collection("images").add({
       "url": downloadUrl,
-      "name": _image.toString(),
+      "name": captionController.value.text,
     });
     setState(() {
       _isLoading = false;
     });
   }
+
+  final captionController = TextEditingController();
 
   bool _isLoading = false;
   @override
@@ -72,7 +74,6 @@ class _UploadImagesState extends State<UploadImages> {
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey[300],
         appBar: AppBar(
           backgroundColor: Colors.indigo,
           title: Center(
@@ -97,66 +98,91 @@ class _UploadImagesState extends State<UploadImages> {
                   child: CircularProgressIndicator(),
                 ),
               )
-            : Container(
-                height: totalHeight * 1,
-                width: totalWidth * 1,
-                child: Column(
-                  children: [
-                    Container(
-                      height: totalHeight * 0.4,
-                      width: totalWidth * 1,
-                      color: Colors.teal[100],
-                      child: _image == null
-                          ? Center(
-                              child: Text(
-                                "Please select an  image",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
+            : SingleChildScrollView(
+                child: Container(
+                  height: totalHeight * 1,
+                  width: totalWidth * 1,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: totalHeight * 0.4,
+                        width: totalWidth * 1,
+                        color: Colors.teal[100],
+                        child: _image == null
+                            ? Center(
+                                child: Text(
+                                  "Please select an  image",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                child: FittedBox(
+                                  fit: BoxFit.cover,
+                                  child: Image.file(_image),
                                 ),
                               ),
-                            )
-                          : Container(
-                              child: FittedBox(
-                                fit: BoxFit.cover,
-                                child: Image.file(_image),
-                              ),
+                      ),
+                      SizedBox(
+                        height: totalHeight * 0.03,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          getImage();
+                        },
+                        color: Colors.teal,
+                        child: Text(
+                          "Pick Image",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: totalHeight * 0.01,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(230, 230, 236, 1),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        height: totalHeight * 0.05,
+                        width: totalWidth * 0.94,
+                        child: TextField(
+                          controller: captionController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Enter Caption",
+                            prefixIcon: Icon(
+                              Icons.forum,
                             ),
-                    ),
-                    SizedBox(
-                      height: totalHeight * 0.03,
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        getImage();
-                      },
-                      color: Colors.teal,
-                      child: Text(
-                        "Pick Image",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: totalHeight * 0.03,
-                    ),
-                    // Upload button
-                    RaisedButton(
-                      onPressed: () async {
-                        uploadImage();
-                      },
-                      color: Colors.indigo,
-                      child: Text(
-                        "Upload",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
+                      SizedBox(
+                        height: totalHeight * 0.03,
                       ),
-                    )
-                  ],
+                      // Upload button
+                      RaisedButton(
+                        onPressed: () async {
+                          uploadImage();
+                          captionController.clear();
+                        },
+                        color: Colors.indigo,
+                        child: Text(
+                          "Upload",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
       ),
