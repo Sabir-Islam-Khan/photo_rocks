@@ -65,6 +65,7 @@ class _UploadImagesState extends State<UploadImages> {
       "url": downloadUrl,
       "caption": captionController.value.text,
       "uploader": "${ds.data['name']}",
+      "profilePic": "${ds.data['profilePic']}",
       "uploadingTime": time,
     });
     captionController.clear();
@@ -76,6 +77,7 @@ class _UploadImagesState extends State<UploadImages> {
   final captionController = TextEditingController();
 
   bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     // total Height and Width constrains

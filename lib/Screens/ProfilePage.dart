@@ -16,6 +16,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    getPpUrl();
+  }
+
+  void getPpUrl() async {
+    User user = await widget.auth.currentUser();
+    String uid = user.uid;
+    DocumentSnapshot ds =
+        await Firestore.instance.collection('Users').document('$uid').get();
+    print("Profile url is $ppUrl");
+    print("Uid here is  $uid");
+    setState(() {
+      ppUrl = ds.data['profilePic'];
+    });
+  }
+
+  String ppUrl = '';
   File _image;
   final picker = ImagePicker();
 
@@ -48,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .onComplete;
     final String profileImage = await snapshot.ref.getDownloadURL();
     await Firestore.instance.collection("Users").document('$uid').setData({
-      "url": profileImage,
+      "profilePic": profileImage,
       "name": nameController.value.text,
     });
     nameController.clear();
@@ -114,26 +133,35 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(
                           height: totalHeight * 0.02,
                         ),
-                        Container(
-                          height: totalHeight * 0.4,
-                          width: totalWidth * 1,
-                          color: Colors.teal[100],
-                          child: _image == null
-                              ? Center(
-                                  child: Text(
-                                    "Please select an  image",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20.0,
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: totalWidth * 0.2,
+                          ),
+                          child: ClipOval(
+                            child: Container(
+                              height: 200,
+                              width: 200,
+                              color: Colors.teal[100],
+                              child: ppUrl == ''
+                                  ? Center(
+                                      child: Text(
+                                        "Please select an  image",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      child: FittedBox(
+                                        fit: BoxFit.cover,
+                                        child: Image.network(
+                                          ppUrl,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : Container(
-                                  child: FittedBox(
-                                    fit: BoxFit.cover,
-                                    child: Image.file(_image),
-                                  ),
-                                ),
+                            ),
+                          ),
                         ),
                         SizedBox(
                           height: totalHeight * 0.02,

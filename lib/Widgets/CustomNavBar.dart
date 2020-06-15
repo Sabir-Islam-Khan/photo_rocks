@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_rocks/Screens/ProfilePage.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 import '../Screens/HomePage.dart';
 import '../Screens/NewsFeed.dart';
 import '../Screens/UploadImages.dart';
@@ -39,7 +40,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => HomePage(auth: null),
+                  builder: (context) => HomePage(
+                    auth: Auth(),
+                  ),
                 ),
               );
             },
@@ -63,7 +66,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewsFeed(),
+                  builder: (context) => NewsFeed(
+                    auth: Auth(),
+                  ),
                 ),
               );
             },
@@ -88,7 +93,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => UploadImages(auth: null),
+                  builder: (context) => UploadImages(
+                    auth: Auth(),
+                  ),
                 ),
               );
             },
@@ -113,7 +120,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
+                  builder: (context) => ProfilePage(
+                    auth: Auth(),
+                  ),
                 ),
               );
             },
