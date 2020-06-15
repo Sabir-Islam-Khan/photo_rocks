@@ -16,6 +16,7 @@ class UploadImages extends StatefulWidget {
 }
 
 class _UploadImagesState extends State<UploadImages> {
+  User user;
   File _image;
   final picker = ImagePicker();
   // var storage = FirebaseStorage.instance;
@@ -35,7 +36,7 @@ class _UploadImagesState extends State<UploadImages> {
 
   String test;
   Future<String> getUid() async {
-    User user = await widget.auth.currentUser();
+    user = await widget.auth.currentUser();
     setState(() {
       test = user.uid;
     });
@@ -45,6 +46,10 @@ class _UploadImagesState extends State<UploadImages> {
   void uploadImage() async {
     String uid = await getUid();
     print("$uid");
+    DocumentSnapshot ds =
+        await Firestore.instance.collection('Users').document('$uid').get();
+
+    print("${ds.data['name']}");
     setState(() {
       _isLoading = true;
     });
@@ -53,10 +58,14 @@ class _UploadImagesState extends State<UploadImages> {
         .child("$uid/${DateTime.now()}")
         .putFile(_image)
         .onComplete;
+    DateTime baseTime = DateTime.now();
+    String time = "${baseTime.day}-${baseTime.month}-${baseTime.year}";
     final String downloadUrl = await snapshot.ref.getDownloadURL();
     await Firestore.instance.collection("images").add({
       "url": downloadUrl,
-      "name": captionController.value.text,
+      "caption": captionController.value.text,
+      "uploader": "${ds.data['name']}",
+      "uploadingTime": time,
     });
     captionController.clear();
     setState(() {

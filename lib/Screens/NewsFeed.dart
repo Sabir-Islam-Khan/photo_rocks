@@ -2,15 +2,20 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 import 'package:photo_rocks/Widgets/CustomNavBar.dart';
 
 class NewsFeed extends StatefulWidget {
+  final AuthBase auth;
+
+  NewsFeed({@required this.auth});
   @override
   _NewsFeedState createState() => _NewsFeedState();
 }
 
 class _NewsFeedState extends State<NewsFeed> {
   final searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // total Height and Width constrains
@@ -18,13 +23,12 @@ class _NewsFeedState extends State<NewsFeed> {
     double totalHeight = MediaQuery.of(context).size.height;
     double totalWidth = MediaQuery.of(context).size.width;
 
-    Future<QuerySnapshot> getImages() {
+    Future<QuerySnapshot> getImages() async {
       return Firestore.instance.collection("images").getDocuments();
     }
 
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white,
         bottomNavigationBar: CustomNavBar(
           totalHeight,
           totalWidth,
@@ -99,7 +103,7 @@ class _NewsFeedState extends State<NewsFeed> {
                       if (snapshot.connectionState == ConnectionState.done) {
                         return Container(
                           width: totalWidth * 1,
-                          height: totalHeight * 0.78,
+                          height: totalHeight * 0.72,
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: snapshot.data.documents.length,
@@ -109,6 +113,29 @@ class _NewsFeedState extends State<NewsFeed> {
                                 children: [
                                   SizedBox(
                                     height: totalHeight * 0.01,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: totalWidth * 0.04,
+                                      top: totalHeight * 0.01,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${snapshot.data.documents[index].data["uploader"]}",
+                                          style: TextStyle(
+                                            fontSize: totalHeight * 0.023,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          "  Posted on ${snapshot.data.documents[index].data["uploadingTime"]}",
+                                          style: TextStyle(
+                                            fontSize: totalHeight * 0.023,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   Container(
                                     margin: EdgeInsets.only(
@@ -126,7 +153,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                       top: totalHeight * 0.01,
                                     ),
                                     child: Text(
-                                      "${snapshot.data.documents[index].data["name"]}",
+                                      "${snapshot.data.documents[index].data["caption"]}",
                                       style: TextStyle(
                                         fontSize: totalHeight * 0.023,
                                         fontWeight: FontWeight.bold,
@@ -162,9 +189,6 @@ class _NewsFeedState extends State<NewsFeed> {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  SizedBox(
-                                    height: totalHeight * 0.01,
                                   ),
                                 ],
                               );

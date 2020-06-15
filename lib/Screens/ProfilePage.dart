@@ -1,12 +1,64 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:photo_rocks/Services/Auth.dart';
 import 'package:photo_rocks/Widgets/CustomNavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfilePage extends StatefulWidget {
+  final AuthBase auth;
+
+  ProfilePage({@required this.auth});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File _image;
+  final picker = ImagePicker();
+
+  final FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: "gs://photo-rocks.appspot.com");
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(
+      () {
+        _image = File(pickedFile.path);
+      },
+    );
+  }
+
+  bool _isLoading = false;
+  String uid;
+  void uploadImage() async {
+    User user = await widget.auth.currentUser();
+    uid = user.uid;
+    print("$uid");
+    setState(() {
+      _isLoading = true;
+    });
+    StorageTaskSnapshot snapshot = await _storage
+        .ref()
+        .child("$uid/${DateTime.now()}")
+        .putFile(_image)
+        .onComplete;
+    final String profileImage = await snapshot.ref.getDownloadURL();
+    await Firestore.instance.collection("Users").document('$uid').setData({
+      "url": profileImage,
+      "name": nameController.value.text,
+    });
+    nameController.clear();
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  final nameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double totalHeight = MediaQuery.of(context).size.height;
@@ -18,7 +70,112 @@ class _ProfilePageState extends State<ProfilePage> {
           totalWidth,
           "ProfilePage",
         ),
-        body: Container(),
+        body: _isLoading == true
+            ? Container(
+                height: totalHeight * 1,
+                width: totalWidth * 1,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  height: totalHeight * 1,
+                  width: totalWidth * 1,
+                  child: SafeArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: totalWidth * 0.04,
+                            top: totalHeight * 0.04,
+                          ),
+                          child: Text(
+                            "Name :",
+                            style: TextStyle(
+                              fontSize: totalHeight * 0.025,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: totalWidth * 0.02,
+                            right: totalWidth * 0.02,
+                          ),
+                          child: TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              hintText: "Enter Name",
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: totalHeight * 0.02,
+                        ),
+                        Container(
+                          height: totalHeight * 0.4,
+                          width: totalWidth * 1,
+                          color: Colors.teal[100],
+                          child: _image == null
+                              ? Center(
+                                  child: Text(
+                                    "Please select an  image",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20.0,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  child: FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: Image.file(_image),
+                                  ),
+                                ),
+                        ),
+                        SizedBox(
+                          height: totalHeight * 0.02,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: totalWidth * 0.35,
+                          ),
+                          child: RaisedButton(
+                            onPressed: () {
+                              getImage();
+                            },
+                            color: Colors.teal,
+                            child: Text(
+                              "Pick Image",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                            left: totalWidth * 0.4,
+                          ),
+                          child: RaisedButton(
+                            onPressed: () {
+                              print("Uid in profile is $uid");
+                              uploadImage();
+                            },
+                            child: Text("Save"),
+                          ),
+                        ),
+                        SizedBox(
+                          height: totalHeight * 0.1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
       ),
     );
   }
