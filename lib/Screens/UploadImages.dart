@@ -68,6 +68,8 @@ class _UploadImagesState extends State<UploadImages> {
       "uploader": "${ds.data['name']}",
       "profilePic": "${ds.data['profilePic']}",
       "uploadingTime": time,
+      "reacts": "0",
+      "views": "1",
     });
     captionController.clear();
     setState(() {

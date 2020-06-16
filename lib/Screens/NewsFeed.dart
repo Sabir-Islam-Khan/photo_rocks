@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_rocks/Services/Auth.dart';
@@ -155,15 +153,34 @@ class _NewsFeedState extends State<NewsFeed> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(
-                                        left: totalWidth * 0.04),
-                                    width: totalWidth * 0.93,
-                                    height: totalHeight * 0.3,
-                                    child: Image.network(
-                                        snapshot
-                                            .data.documents[index].data["url"],
-                                        fit: BoxFit.fill),
+                                  GestureDetector(
+                                    onDoubleTap: () async {
+                                      String initialValue = snapshot
+                                          .data.documents[index].data["reacts"];
+                                      String docRef = snapshot
+                                          .data.documents[index].documentID;
+                                      print(docRef);
+                                      String result =
+                                          "${int.parse(initialValue) + 1}";
+                                      await Firestore.instance
+                                          .collection("images")
+                                          .document(docRef)
+                                          .updateData(
+                                        {
+                                          "reacts": "$result",
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          left: totalWidth * 0.04),
+                                      width: totalWidth * 0.93,
+                                      height: totalHeight * 0.3,
+                                      child: Image.network(
+                                          snapshot.data.documents[index]
+                                              .data["url"],
+                                          fit: BoxFit.fill),
+                                    ),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
@@ -188,7 +205,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                         color: Colors.grey,
                                       ),
                                       Text(
-                                        " ${Random().nextInt(3500)},",
+                                        " ${snapshot.data.documents[index].data["views"]}",
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
@@ -201,7 +218,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                         color: Colors.pink[300],
                                       ),
                                       Text(
-                                        " ${Random().nextInt(500)}",
+                                        " ${snapshot.data.documents[index].data["reacts"]}",
                                         style: TextStyle(
                                           color: Colors.grey,
                                         ),
