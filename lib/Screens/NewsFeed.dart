@@ -117,55 +117,53 @@ class _NewsFeedState extends State<NewsFeed> {
                                   Padding(
                                     padding: EdgeInsets.only(
                                       left: totalWidth * 0.04,
-                                      top: totalHeight * 0.01,
+                                      bottom: totalHeight * 0.005,
                                     ),
                                     child: Row(
                                       children: [
-                                        Text(
-                                          "${snapshot.data.documents[index].data["uploader"]}",
-                                          style: TextStyle(
-                                            fontSize: totalHeight * 0.023,
-                                            fontWeight: FontWeight.bold,
+                                        ClipOval(
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            child: Image.network(
+                                              snapshot.data.documents[index]
+                                                  .data["profilePic"],
+                                              fit: BoxFit.fill,
+                                            ),
                                           ),
                                         ),
-                                        Text(
-                                          "  Posted on ${snapshot.data.documents[index].data["uploadingTime"]}",
-                                          style: TextStyle(
-                                            fontSize: totalHeight * 0.023,
-                                          ),
+                                        SizedBox(
+                                          width: totalWidth * 0.02,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              "${snapshot.data.documents[index].data["uploader"]}",
+                                              style: TextStyle(
+                                                fontSize: totalHeight * 0.023,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              " On ${snapshot.data.documents[index].data["uploadingTime"]}",
+                                              style: TextStyle(
+                                                fontSize: totalHeight * 0.023,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: totalWidth * 0.04),
-                                        width: totalWidth * 0.93,
-                                        height: totalHeight * 0.3,
-                                        child: Image.network(
-                                            snapshot.data.documents[index]
-                                                .data["url"],
-                                            fit: BoxFit.fill),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: totalWidth * 0.05,
-                                          top: totalHeight * 0.005,
-                                        ),
-                                        child: ClipOval(
-                                          child: Container(
-                                            width: 45,
-                                            height: 45,
-                                            child: Image.network(
-                                                snapshot.data.documents[index]
-                                                    .data["profilePic"],
-                                                fit: BoxFit.fill),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: totalWidth * 0.04),
+                                    width: totalWidth * 0.93,
+                                    height: totalHeight * 0.3,
+                                    child: Image.network(
+                                        snapshot
+                                            .data.documents[index].data["url"],
+                                        fit: BoxFit.fill),
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(

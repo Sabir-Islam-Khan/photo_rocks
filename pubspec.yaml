@@ -63,7 +63,7 @@ flutter:
     - assets/images/upload_inactive.png
     - assets/images/feed_active.png
     - assets/images/feed_inactive.png
-
+    - assets/images/avatar_placeholder.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

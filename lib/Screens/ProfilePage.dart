@@ -143,13 +143,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 200,
                               color: Colors.teal[100],
                               child: ppUrl == ''
-                                  ? Center(
-                                      child: Text(
-                                        "Please select an  image",
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 20.0,
-                                        ),
+                                  ? Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        "assets/images/avatar_placeholder.png",
                                       ),
                                     )
                                   : Container(

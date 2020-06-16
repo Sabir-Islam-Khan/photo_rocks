@@ -61,6 +61,7 @@ class _UploadImagesState extends State<UploadImages> {
     DateTime baseTime = DateTime.now();
     String time = "${baseTime.day}-${baseTime.month}-${baseTime.year}";
     final String downloadUrl = await snapshot.ref.getDownloadURL();
+
     await Firestore.instance.collection("images").add({
       "url": downloadUrl,
       "caption": captionController.value.text,

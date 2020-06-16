@@ -17,6 +17,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<void> _signOut() async {
+    setState(() {
+      print("Rebuilds app");
+    });
     try {
       await widget.auth.signOut();
     } catch (e) {
