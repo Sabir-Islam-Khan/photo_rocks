@@ -42,7 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
       FirebaseStorage(storageBucket: "gs://photo-rocks.appspot.com");
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 60,
+    );
 
     setState(
       () {

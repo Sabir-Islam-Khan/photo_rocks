@@ -25,8 +25,10 @@ class _UploadImagesState extends State<UploadImages> {
       FirebaseStorage(storageBucket: "gs://photo-rocks.appspot.com");
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 80,
+    );
     setState(
       () {
         _image = File(pickedFile.path);
