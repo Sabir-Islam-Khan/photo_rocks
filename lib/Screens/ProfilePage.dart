@@ -142,21 +142,30 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 200,
                               width: 200,
                               color: Colors.teal[100],
-                              child: ppUrl == ''
+                              child: _image == null && ppUrl == ''
                                   ? Image(
                                       fit: BoxFit.cover,
                                       image: AssetImage(
                                         "assets/images/avatar_placeholder.png",
                                       ),
                                     )
-                                  : Container(
-                                      child: FittedBox(
-                                        fit: BoxFit.cover,
-                                        child: Image.network(
-                                          ppUrl,
+                                  : ppUrl != ''
+                                      ? Container(
+                                          child: FittedBox(
+                                            fit: BoxFit.cover,
+                                            child: Image.network(
+                                              ppUrl,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          child: FittedBox(
+                                            fit: BoxFit.cover,
+                                            child: Image.file(
+                                              _image,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
                             ),
                           ),
                         ),

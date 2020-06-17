@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_rocks/Services/Auth.dart';
 import 'package:photo_rocks/Widgets/CustomNavBar.dart';
+import 'package:photo_rocks/Widgets/FeedData.dart';
 
 class NewsFeed extends StatefulWidget {
   final AuthBase auth;
@@ -99,137 +100,7 @@ class _NewsFeedState extends State<NewsFeed> {
                     future: getImages(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
-                        return Container(
-                          width: totalWidth * 1,
-                          height: totalHeight * 0.72,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.documents.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: totalHeight * 0.01,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: totalWidth * 0.04,
-                                      bottom: totalHeight * 0.005,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        ClipOval(
-                                          child: Container(
-                                            width: 40,
-                                            height: 40,
-                                            child: Image.network(
-                                              snapshot.data.documents[index]
-                                                  .data["profilePic"],
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: totalWidth * 0.02,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Text(
-                                              "${snapshot.data.documents[index].data["uploader"]}",
-                                              style: TextStyle(
-                                                fontSize: totalHeight * 0.023,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              " On ${snapshot.data.documents[index].data["uploadingTime"]}",
-                                              style: TextStyle(
-                                                fontSize: totalHeight * 0.023,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onDoubleTap: () async {
-                                      String initialValue = snapshot
-                                          .data.documents[index].data["reacts"];
-                                      String docRef = snapshot
-                                          .data.documents[index].documentID;
-                                      print(docRef);
-                                      String result =
-                                          "${int.parse(initialValue) + 1}";
-                                      await Firestore.instance
-                                          .collection("images")
-                                          .document(docRef)
-                                          .updateData(
-                                        {
-                                          "reacts": "$result",
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(
-                                          left: totalWidth * 0.04),
-                                      width: totalWidth * 0.93,
-                                      height: totalHeight * 0.3,
-                                      child: Image.network(
-                                          snapshot.data.documents[index]
-                                              .data["url"],
-                                          fit: BoxFit.fill),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: totalWidth * 0.04,
-                                      top: totalHeight * 0.01,
-                                    ),
-                                    child: Text(
-                                      "${snapshot.data.documents[index].data["caption"]}",
-                                      style: TextStyle(
-                                        fontSize: totalHeight * 0.023,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      SizedBox(
-                                        width: totalWidth * 0.04,
-                                      ),
-                                      Icon(
-                                        Icons.remove_red_eye,
-                                        color: Colors.grey,
-                                      ),
-                                      Text(
-                                        " ${snapshot.data.documents[index].data["views"]}",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: totalWidth * 0.5,
-                                      ),
-                                      Icon(
-                                        Icons.favorite,
-                                        color: Colors.pink[300],
-                                      ),
-                                      Text(
-                                        " ${snapshot.data.documents[index].data["reacts"]}",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        );
+                        return FeedData(totalHeight, totalWidth, snapshot);
                       } else if (snapshot.connectionState ==
                           ConnectionState.none) {
                         return Text("No data");
