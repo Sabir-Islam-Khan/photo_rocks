@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class FeedData extends StatefulWidget {
   final double totalHeight;
@@ -16,15 +17,25 @@ class FeedData extends StatefulWidget {
 }
 
 class _FeedDataState extends State<FeedData> {
+  bool _imageLoading = true;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.totalWidth * 1,
-      height: widget.totalHeight * 0.72,
-      child: ListView.builder(
-        shrinkWrap: true,
+      height: widget.totalHeight * 0.86,
+      child: CarouselSlider.builder(
+        options: CarouselOptions(
+          autoPlay: false,
+          height: MediaQuery.of(context).size.height,
+          enlargeCenterPage: false,
+          viewportFraction: 1.0,
+          initialPage: 0,
+          scrollDirection: Axis.vertical,
+        ),
         itemCount: widget.snapshot.data.documents.length,
         itemBuilder: (BuildContext context, int index) {
+          var image = widget.snapshot.data.documents[index].data["url"];
+          print(image);
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -80,9 +91,7 @@ class _FeedDataState extends State<FeedData> {
                       widget.snapshot.data.documents[index].documentID;
                   print(docRef);
                   String result;
-                  setState(() {
-                    result = "${int.parse(initialValue) + 1}";
-                  });
+
                   await Firestore.instance
                       .collection("images")
                       .document(docRef)
@@ -91,14 +100,21 @@ class _FeedDataState extends State<FeedData> {
                       "reacts": "$result",
                     },
                   );
+                  setState(() {
+                    result = "${int.parse(initialValue) + 1}";
+                  });
                 },
                 child: Container(
-                  margin: EdgeInsets.only(left: widget.totalWidth * 0.04),
-                  width: widget.totalWidth * 0.93,
-                  height: widget.totalHeight * 0.4,
-                  child: Image.network(
-                      widget.snapshot.data.documents[index].data["url"],
-                      fit: BoxFit.fill),
+                  margin: EdgeInsets.only(
+                    left: widget.totalWidth * 0.01,
+                    right: widget.totalWidth * 0.01,
+                  ),
+                  width: widget.totalWidth * 0.99,
+                  height: widget.totalHeight * 0.7,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/gifs/progress.gif',
+                    image: widget.snapshot.data.documents[index].data['url'],
+                  ),
                 ),
               ),
               Padding(
@@ -134,7 +150,7 @@ class _FeedDataState extends State<FeedData> {
                   ),
                   Icon(
                     Icons.favorite,
-                    color: Colors.pink[300],
+                    color: Colors.pink[500],
                   ),
                   Text(
                     " ${widget.snapshot.data.documents[index].data["reacts"]}",

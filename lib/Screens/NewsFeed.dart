@@ -42,60 +42,60 @@ class _NewsFeedState extends State<NewsFeed> {
               // column for the whole body
               child: Column(
                 children: [
-                  // padding for title
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: totalHeight * 0.02,
-                    ),
-                    // row containing title and drop down
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: totalWidth * 0.04,
-                        ),
-                        // title
-                        Text(
-                          "Popular",
-                          style: TextStyle(
-                            fontSize: totalHeight * 0.03,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(
-                          width: totalWidth * 0.01,
-                        ),
-                        // drop down
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: totalHeight * 0.008,
-                          ),
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            size: totalHeight * 0.035,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // search box
-                  SizedBox(
-                    height: totalHeight * 0.02,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(244, 245, 249, 1),
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    height: totalHeight * 0.05,
-                    width: totalWidth * 0.94,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Search Keywords",
-                        prefixIcon: Icon(Icons.search),
-                      ),
-                    ),
-                  ),
+                  // // padding for title
+                  // Padding(
+                  //   padding: EdgeInsets.only(
+                  //     top: totalHeight * 0.02,
+                  //   ),
+                  //   // row containing title and drop down
+                  //   child: Row(
+                  //     children: [
+                  //       SizedBox(
+                  //         width: totalWidth * 0.04,
+                  //       ),
+                  //       // title
+                  //       Text(
+                  //         "Popular",
+                  //         style: TextStyle(
+                  //           fontSize: totalHeight * 0.03,
+                  //           fontWeight: FontWeight.w600,
+                  //         ),
+                  //       ),
+                  //       SizedBox(
+                  //         width: totalWidth * 0.01,
+                  //       ),
+                  //       // drop down
+                  //       Padding(
+                  //         padding: EdgeInsets.only(
+                  //           top: totalHeight * 0.008,
+                  //         ),
+                  //         child: Icon(
+                  //           Icons.keyboard_arrow_down,
+                  //           size: totalHeight * 0.035,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // // search box
+                  // SizedBox(
+                  //   height: totalHeight * 0.02,
+                  // ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: Color.fromRGBO(244, 245, 249, 1),
+                  //     borderRadius: BorderRadius.circular(30.0),
+                  //   ),
+                  //   height: totalHeight * 0.05,
+                  //   width: totalWidth * 0.94,
+                  //   child: TextField(
+                  //     decoration: InputDecoration(
+                  //       border: InputBorder.none,
+                  //       hintText: "Search Keywords",
+                  //       prefixIcon: Icon(Icons.search),
+                  //     ),
+                  //   ),
+                  // ),
                   FutureBuilder(
                     future: getImages(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {

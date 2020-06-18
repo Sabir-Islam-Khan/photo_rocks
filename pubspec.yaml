@@ -35,7 +35,7 @@ dependencies:
   firebase_storage: ^3.1.6
   image_picker: ^0.6.7+1
   cloud_firestore: ^0.13.6
-
+  carousel_slider: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +65,7 @@ flutter:
     - assets/images/feed_active.png
     - assets/images/feed_inactive.png
     - assets/images/avatar_placeholder.png
+    - assets/gifs/progress.gif
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
