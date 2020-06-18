@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future getImage() async {
     final pickedFile = await picker.getImage(
       source: ImageSource.gallery,
-      imageQuality: 60,
+      imageQuality: 40,
     );
 
     setState(

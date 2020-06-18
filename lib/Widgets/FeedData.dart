@@ -95,7 +95,7 @@ class _FeedDataState extends State<FeedData> {
                 child: Container(
                   margin: EdgeInsets.only(left: widget.totalWidth * 0.04),
                   width: widget.totalWidth * 0.93,
-                  height: widget.totalHeight * 0.3,
+                  height: widget.totalHeight * 0.4,
                   child: Image.network(
                       widget.snapshot.data.documents[index].data["url"],
                       fit: BoxFit.fill),
